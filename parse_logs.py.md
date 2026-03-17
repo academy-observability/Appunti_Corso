@@ -1,6 +1,6 @@
 
 # script parse_logs.py
-versione **semplificata e spiegata riga per riga*
+versione **semplificata e spiegata riga per riga**
 
 
 
