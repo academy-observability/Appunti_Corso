@@ -739,15 +739,24 @@ Esegui questo step **in WSL Ubuntu locale**.
 ### Comandi da eseguire
 
 ```bash
+ACR_LOGIN_SERVER=$(az acr show -n "$ACR_NAME" --query loginServer -o tsv)
+CR_USERNAME=$(az acr credential show -n "$ACR_NAME" --query username -o tsv)
+CR_PASSWORD=$(az acr credential show -n "$ACR_NAME" --query "passwords[0].value" -o tsv)
+
 az container create \
   --resource-group "$RG" \
   --name "$ACI_NAME" \
   --image "$ACR_LOGIN_SERVER/obsapp:v2" \
   --registry-login-server "$ACR_LOGIN_SERVER" \
+  --registry-username "$CR_USERNAME" \
+  --registry-password "$CR_PASSWORD" \
+  --os-type Linux \
+  --cpu 1 \
+  --memory 1.5 \
   --ip-address Public \
   --ports 8000 \
   --environment-variables PORT=8000
-```
+
 
 Poi verifica lo stato:
 
