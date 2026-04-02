@@ -121,7 +121,7 @@ Sì, ma nel mondo reale i segnali osservabili possono essere anche:
 
 - dati di audit
 - tabelle di richieste
-- eventi persistiti
+- eventi resi persistenti
 - record di esecuzione
 - storici di transazioni
 - dati funzionali da cui ricavare indicatori operativi
@@ -184,7 +184,7 @@ Identifica una singola richiesta o un singolo evento.
 Serve a:
 
 - distinguere una richiesta dall’altra
-- collegare dati persistiti e log applicativi
+- collegare dati resi persistenti e log applicativi
 - supportare troubleshooting e ricostruzione dei casi
 
 ---
@@ -251,7 +251,7 @@ Esempi:
 
 Queste domande diventano query SQL.
 
-In pratica SQL, in questo contesto, è un linguaggio per fare **analisi osservability sui dati persistiti**.
+In pratica SQL, in questo contesto, è un linguaggio per fare **analisi osservability sui dati resi persistenti**.
 
 ---
 
@@ -339,7 +339,7 @@ Nel LAB10 userai principalmente:
 
 Alla fine del laboratorio dovrai aver capito che:
 
-* i segnali osservabili possono essere persistiti in forma strutturata
+* i segnali osservabili possono essere resi persistenti in forma strutturata
 * SQL è uno strumento molto utile per l’analisi operativa
 * gli SLI possono nascere anche da query su dati applicativi
 * `correlation_id`, `status`, `duration_ms` non sono solo dettagli di log, ma colonne fondamentali per fare analisi
@@ -838,7 +838,7 @@ Questa query ti fa vedere come usare il `correlation_id` per recuperare una sing
 
 * evento singolo
 * log applicativo
-* analisi persistita
+* analisi della persistenza
 
 ### Evidenza richiesta
 
@@ -915,7 +915,7 @@ Usa questa struttura:
 - Che cosa ho capito sulla persistenza dei dati osservabili:
 - Che cosa misura un SLI:
 - Perché SQL è utile nell’Observability:
-- Differenza tra log runtime e dati persistiti:
+- Differenza tra log runtime e dati resi persistenti:
 ```
 
 ---
@@ -1027,7 +1027,7 @@ Questo laboratorio ti insegna almeno cinque cose importanti.
 
 ## 3.1 I segnali osservabili possono diventare dati strutturati
 
-Non tutto resta log grezzo. Alcuni eventi vanno persistiti in forma interrogabile.
+Non tutto resta log grezzo. Alcuni eventi vanno resi persistenti in forma interrogabile.
 
 ## 3.2 SQL può essere uno strumento di osservabilità
 
