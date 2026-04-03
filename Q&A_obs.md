@@ -28,26 +28,59 @@ SRE significa **Site Reliability Engineering**.
 ## Domanda 2
 **Qual è lo scopo principale dell’SRE?**
 
+Garantire la **reliability** dei servizi, cioè mantenerli affidabili e funzionanti nel tempo, bilanciando stabilità, qualità operativa e velocità di cambiamento.
+
 ## Domanda 3
 **Che cosa si intende per reliability?**
+
+La reliability è la capacità di un sistema di funzionare correttamente nel tempo, in modo prevedibile e con un livello di qualità coerente con quanto atteso.
 
 ## Domanda 4
 **Che differenza c’è tra amministrazione di sistema tradizionale e approccio SRE?**
 
+L’amministrazione tradizionale tende a essere più manuale e reattiva.  
+L’approccio SRE punta invece a:
+- misurare
+- automatizzare
+- ridurre il lavoro ripetitivo
+- migliorare l’affidabilità con un approccio ingegneristico
+
 ## Domanda 5
 **Che cos’è la Observability?**
+
+La Observability è la capacità di comprendere lo stato interno di un sistema a partire dai segnali che il sistema produce all’esterno, come log, metriche e trace.
 
 ## Domanda 6
 **Che differenza c’è tra monitoring e observability?**
 
+Il monitoring controlla condizioni e problemi già noti, per esempio CPU alta o servizio non disponibile.  
+La observability aiuta invece a capire anche problemi non previsti, esplorando i dati per formulare ipotesi e individuare cause.
+
 ## Domanda 7
 **Quali sono i tre pilastri classici della observability?**
+
+I tre pilastri classici sono:
+- log
+- metriche
+- trace
 
 ## Domanda 8
 **Che cosa sono i log?**
 
+I log sono registrazioni di eventi avvenuti nel sistema o nell’applicazione.  
+Servono a capire cosa è successo, quando è successo e in quale contesto.
+
 ## Domanda 9
 **Che cosa sono le metriche?**
+
+Le metriche sono misure numeriche raccolte nel tempo, per esempio:
+- numero di richieste
+- tempo di risposta
+- utilizzo CPU
+- memoria
+- tasso di errore
+
+Servono a osservare andamento, trend e anomalie.
 
 ## Domanda 10
 **Che cosa sono le trace?**
