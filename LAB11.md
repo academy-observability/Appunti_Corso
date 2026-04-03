@@ -618,6 +618,14 @@ Esegui uno screenshot della schermata Logs del workspace.
 
 ---
 
+**ATTENZIONE**
+Prima di andare avanti manda di nuovo i comandi dei seguenti Step:
+
+Step 6 — Recupera l'ID della ACI
+Step 7 — Recupera l'ID del Workspace
+Step 8 — Collega ACI al Workspace
+Step 10 — Genera traffico verso il container
+
 ## Step 13 - Identifica le tabelle che contengono i dati
 
 Nel pannello delle tabelle oppure tramite query, prova a identificare dove stanno arrivando i dati.
