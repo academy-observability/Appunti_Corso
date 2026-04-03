@@ -90,3 +90,85 @@
 
 ## Domanda 24
 **Perché l’error budget è importante?**
+
+## Domanda 25
+**Che cosa significa availability?**
+
+## Domanda 26
+**Che cosa significa latency?**
+
+## Domanda 27
+**Che cosa significa throughput?**
+
+## Domanda 28
+**Che cosa significa error rate?**
+
+## Domanda 29
+**Che cosa significa MTTR?**
+
+## Domanda 30
+**Che cosa significa MTTD?**
+
+## Domanda 31
+**Perché ridurre MTTD e MTTR è importante?**
+
+## Domanda 32
+**Che cos’è il toil?**
+
+## Domanda 33
+**Perché l’SRE vuole ridurre il toil?**
+
+## Domanda 34
+**Che cos’è un runbook?**
+
+## Domanda 35
+**Che cos’è un postmortem?**
+
+## Domanda 36
+**Che cosa significa blameless postmortem?**
+
+## Domanda 37
+**Che cos’è un health check?**
+
+## Domanda 38
+**Che differenza c’è tra un sistema up e un sistema healthy?**
+
+## Domanda 39
+**Che cos’è un endpoint?**
+
+## Domanda 40
+**Che cos’è un request ID o correlation ID?**
+
+## Domanda 41
+**Perché la correlazione è importante in observability?**
+
+## Domanda 42
+**Che cosa significa root cause?**
+
+## Domanda 43
+**Che cosa si intende per troubleshooting?**
+
+## Domanda 44
+**Qual è una buona sequenza di troubleshooting?**
+
+## Domanda 45
+**Perché in observability servono dati strutturati?**
+
+## Domanda 46
+**Che cos’è la latenza P95?**
+
+## Domanda 47
+**Perché la media da sola non basta per valutare la latenza?**
+
+## Domanda 48
+**Che cosa sono i Golden Signals?**
+
+## Domanda 49
+**Che cosa significa saturation?**
+
+## Domanda 50
+**Perché observability e SRE sono collegati?**
+
+
+
+
