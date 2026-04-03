@@ -622,7 +622,7 @@ Usa questa struttura:
 SELECT *
 FROM requests_log
 WHERE correlation_id = 'req-004';
-````
+```
 
 * Numero righe restituite:
 * Commento:
