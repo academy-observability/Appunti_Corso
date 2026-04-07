@@ -1,5 +1,3 @@
----
-
 # LAB12 – Alerting: Alert Rule + Action Group su SLI (error_rate)
 Durata stimata: 4 ore
 
