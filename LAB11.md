@@ -661,7 +661,7 @@ Esegui uno screenshot dei primi risultati o annota i nomi delle tabelle osservat
 ---
 
 <details>
-<summary><strong>⚠️ TROUBLESHOOTING - I log non arrivano nel workspace (clicca per espandere)</strong></summary>
+<summary><strong>⚠️ TROUBLESHOOTING - I log non arrivano nel workspace (clicca per espandere) LUIS DRAGOS ISTRATE</strong></summary>
 
 ### Problema
 
