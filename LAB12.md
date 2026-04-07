@@ -40,7 +40,7 @@ Quindi in questo laboratorio:
 
 ---
 
-## Modalità Percorso Continuativo (Aula - Ufficiale)
+## Modalità Percorso Continuativo 
 
 **NON eliminare il Resource Group fino al LAB14.** :contentReference[oaicite:4]{index=4}
 
