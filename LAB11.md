@@ -657,6 +657,101 @@ A seconda della configurazione, i dati potrebbero apparire in tabelle diverse.
 ### Evidenza richiesta
 
 Esegui uno screenshot dei primi risultati o annota i nomi delle tabelle osservate.
+---
+---
+
+<details>
+<summary><strong>⚠️ TROUBLESHOOTING - I log non arrivano nel workspace (clicca per espandere)</strong></summary>
+
+### Problema
+
+Hai configurato le Diagnostic Settings, la configurazione sembra corretta (le categorie `ContainerInstanceLog` e `ContainerEvent` risultano `enabled: true`), ma nel workspace non arriva nessun dato. La query `search *` restituisce zero risultati anche dopo 15-20 minuti.
+
+### Causa
+
+Il supporto delle Diagnostic Settings per le Azure Container Instances è in **Public Preview** su molte sottoscrizioni. Azure ti lascia creare la configurazione senza errori, ma in realtà **nessun dato viene inviato**. Il "tubo" esiste sulla carta ma non trasporta nulla.
+
+### Come verificare se sei in questa situazione
+```bash
+az monitor diagnostic-settings categories list --resource "$ACI_ID" --output table
+```
+
+Se l'output in formato `table` è **completamente vuoto**, sei nel caso del problema.
+
+### Soluzione: metodo nativo ACI → Log Analytics
+
+Invece delle Diagnostic Settings, bisogna passare le credenziali del workspace direttamente al container.
+
+**1. Recupera le credenziali del workspace:**
+```bash
+WORKSPACE_ID=$(az monitor log-analytics workspace show \
+  --resource-group "$RG" \
+  --workspace-name "$LAW_NAME" \
+  --query customerId -o tsv)
+
+WORKSPACE_KEY=$(az monitor log-analytics workspace get-shared-keys \
+  --resource-group "$RG" \
+  --workspace-name "$LAW_NAME" \
+  --query primarySharedKey -o tsv)
+```
+
+**2. Recupera le credenziali del Container Registry (se usi un ACR privato):**
+```bash
+ACR_NAME="<nome_del_tuo_acr>"
+ACR_USERNAME=$(az acr credential show --name "$ACR_NAME" --query username -o tsv)
+ACR_PASSWORD=$(az acr credential show --name "$ACR_NAME" --query "passwords[0].value" -o tsv)
+```
+
+**3. Ricrea il container con integrazione nativa:**
+```bash
+az container create \
+  --resource-group "$RG" \
+  --name "$ACI_NAME" \
+  --image "<registry>.azurecr.io/<image>:<tag>" \
+  --ip-address public \
+  --ports 8000 \
+  --os-type Linux \
+  --cpu 1 \
+  --memory 1.5 \
+  --registry-login-server "<registry>.azurecr.io" \
+  --registry-username "$ACR_USERNAME" \
+  --registry-password "$ACR_PASSWORD" \
+  --log-analytics-workspace "$WORKSPACE_ID" \
+  --log-analytics-workspace-key "$WORKSPACE_KEY"
+```
+
+**4. Verifica che l'integrazione sia attiva:**
+```bash
+az container show --resource-group "$RG" --name "$ACI_NAME" --query "diagnostics" --output json
+```
+
+Devi vedere un blocco `logAnalytics` con il `workspaceId`. Se vedi `null`, qualcosa non ha funzionato.
+
+**5. Genera traffico e attendi 3-5 minuti:**
+```bash
+export ACI_PUBLIC_IP=$(az container show --resource-group "$RG" \
+  --name "$ACI_NAME" --query ipAddress.ip --output tsv)
+
+curl -i "http://$ACI_PUBLIC_IP:8000/health"
+curl -i "http://$ACI_PUBLIC_IP:8000/time"
+curl -i "http://$ACI_PUBLIC_IP:8000/nope"
+```
+
+### Nota importante
+
+Con il metodo nativo i log finiscono nella tabella **`ContainerInstanceLog_CL`** (con suffisso `_CL`), non in `AzureDiagnostics`. Adatta le query degli Step successivi di conseguenza.
+
+### Errori comuni durante questa procedura
+
+| Errore | Soluzione |
+|--------|-----------|
+| `InvalidApiVersionParameter` | Aggiorna Azure CLI con `az upgrade` |
+| `InvalidOsType` | Aggiungi `--os-type Linux` al comando |
+| `ResourceRequestsNotSpecified` | Aggiungi `--cpu 1 --memory 1.5` |
+| Errore autenticazione immagine | Aggiungi `--registry-login-server`, `--registry-username`, `--registry-password` |
+| Variabili vuote (`$RG`, `$ACI_ID`) | Reimpostale con `export`. Si perdono chiudendo il terminale |
+
+</details>
 
 ---
 
