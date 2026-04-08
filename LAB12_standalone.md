@@ -586,6 +586,39 @@ La container instance deve risultare creata correttamente.
 
 ---
 
+<details>
+### RETTIFICA VARIABILE D'AMBIENTE PER LA CREAZIONE DEL CONTAINER:
+
+ESEGUIAMO QUESTO COMANDO PER ESTRAPOLARE IL LAW_ID:
+```
+LAW_ID=$(az monitor log-analytics workspace show \
+  --resource-group "$RG" \
+  --workspace-name "$LAW_NAME" \
+  --query customerId -o tsv)
+```
+ESEGUIAMO NUOVAMENTE IL CONTAINER CREATE CON LA VARIABILE NUOVA:
+
+```bash
+az container create \
+  --resource-group "$RG" \
+  --name "$ACI_NAME" \
+  --image "$ACR_LOGIN_SERVER/$IMAGE_NAME:$IMAGE_TAG" \
+  --registry-login-server "$ACR_LOGIN_SERVER" \
+  --registry-username "$ACR_USERNAME" \
+  --registry-password "$ACR_PASSWORD" \
+  --cpu 1 \
+  --memory 1.5 \
+  --os-type Linux \
+  --ip-address Public \
+  --ports 8000 \
+  --environment-variables PORT=8000 \
+  --log-analytics-workspace "$LAW_ID" \
+  --log-analytics-workspace-key "$LAW_KEY"
+```
+</details>
+
+---
+
 ## Step 14 - Recupera IP pubblico e verifica l’applicazione
 
 Esegui:
@@ -684,6 +717,38 @@ ContainerInstanceLog_CL
 - conta le richieste totali
 - conta le richieste con `status >= 400`
 - calcola il rapporto `error_rate`
+
+---
+
+<details>
+### RETTIFICA QUERY KQL:
+Nelle query che non funzionano, si usa ContainerGroup == "obsapp-aci", mentre la colonna corretta da filtrare è ContainerName_s.
+Quindi, per far funzionare le query, basta sostituire ContainerGroup con ContainerName_s in tutti i punti in cui viene usata.
+
+---
+
+### Query 1 KQL:
+```kql
+ContainerInstanceLog_CL
+| where ContainerName_s== "obsapp-aci"
+| project TimeGenerated, ContainerName_s, Message
+| order by TimeGenerated desc
+| take 20
+```
+
+### Query 2 KQL:
+```kql
+ContainerInstanceLog_CL
+| where ContainerName_s == "obsapp-aci"
+| extend payload = parse_json(Message)
+| extend status = toint(payload.status)
+| where isnotnull(status)
+| summarize 
+    total_requests = count(),
+    error_requests = countif(status >= 400),
+    error_rate = todouble(countif(status >= 400)) / todouble(count())
+```
+</details>
 
 ---
 
