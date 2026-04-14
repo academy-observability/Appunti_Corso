@@ -850,7 +850,85 @@ az container logs \
 ```
 
 ---
+**25.6 🔴 NUOVO: La pipeline fallisce con "No hosted parallelism"**
+**Cosa significa:**
+Error: No hosted parallelism has been purchased
 
+**Causa:**
+I nuovi account Azure DevOps non hanno accesso gratuito ai server Microsoft per eseguire le pipeline. È una limitazione di Microsoft, non un errore tuo.
+
+**Possibili Soluzioni**
+
+- Attendere approvazione Microsoft24-48H
+- Deploy manuale (vedi 25.6.1)
+- MediaAgente self-hosted (vedi 25.6.2)
+
+ **25.6.1 ✅ SOLUZIONE RAPIDA: Deploy manuale**
+
+ Se non vuoi aspettare Microsoft, puoi eseguire manualmente i comandi che la pipeline eseguirebbe.
+
+- Passaggi 1-5
+- Passo 1: Login al registry
+- az acr login --name TUO_NOME_ACR
+- Passo 2: Build immagine
+- docker build -t TUO_NOME_ACR.azurecr.io/obsapp-v3:latest .
+- Passo 3: Push su ACR
+- docker push TUO_NOME_ACR.azurecr.io/obsapp-v3:latest
+- Passo 4: Recupera credenziali (copiale, ti serviranno dopo)
+- ACR_USER=$(az acr credential show --name TUO_NOME_ACR --query username -o tsv)
+- ACR_PASS=$(az acr credential show --name TUO_NOME_ACR --query "passwords[0].value" -o tsv)
+- Passo 5: Deploy su ACI (sostituisci i valori)
+- az container create \
+  - --resource-group TUO_RESOURCE_GROUP \
+  - --name obsapp-v3-aci \
+  - --image TUO_NOME_ACR.azurecr.io/obsapp-v3:latest \
+  - --os-type Linux \
+  - --ports 8000 \
+  - --ip-address Public \
+  - --dns-name-label obsappv3-TUONOME \
+  - --location westeurope \
+  - --registry-login-server TUO_NOME_ACR.azurecr.io \
+  - --registry-username ${ACR_USER} \
+  - --registry-password ${ACR_PASS} \
+  - --environment-variables PORT=8000
+
+**RISULTATO ATTESO**
+Se tutto funziona vedrai:
+Application can be accessed at: http://<IP_PUBBLICO>:8000
+**Nota importante da esperienza:**
+Se ricevi errore **InvalidOsType**, aggiungi --**os-type Linux** al comando az container create (vedi già fatto nell'esempio sopra).
+
+**25.6.2 🚀 SOLUZIONE DEFINITIVA: Agente self-hosted su WSL**
+**Personal Access Token - PAT**
+- Vai su Azure DevOps
+- Personal Access Tokens
+- Clicca + New Token
+- Nome: scegli un mome . Scadenza: 30 giorni.
+- Scopes (Permessi): Seleziona Full Access.
+- Clicca Create e COPIA il codice (te lo mostra una sola volta-quindi copialo)
+
+  **installare l'agent su wsl**
+- Scarichiamo e configuriamo il programma che eseguirà i lavori.
+- Perché serve: È il software che materialmente scarica il codice e crea i container.
+- Apri il terminale WSL e scrivi questi comandi uno alla volta:
+- Crea la cartella:
+- mkdir agente-lab && cd agente-lab
+- Estrai i file:
+- tar zxvf vsts-agent-linux-x64-3.225.0.tar.gz
+- Configura (Segui l'esempio):
+- ./config.sh
+  **Quando il terminale ti fa le domande, rispondi così:**
+
+
+- Server URL:  ([quello che vedi nella barra del browser](https://dev.azure.com/SOLOILNOMEDELLATUAORGANITATION)).
+- Authentication type: Premi Invio.
+- Personal access token: Incolla la chiave creata al punto 1.
+- Agent Pool: premi Invio.
+- Agent Name: Scrivi mio-agente-wsl.
+- Work folder: Premi Invio.
+
+
+- 
 # 26. Evidenze richieste
 
 Crea il file:
