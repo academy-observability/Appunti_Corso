@@ -386,6 +386,7 @@ stages:
             --resource-group $(resourceGroupName) \
             --name $(aciName) \
             --image ${FULL_IMAGE_NAME} \
+            --os-type Linux \
             --cpu 1 \
             --memory 1.5 \
             --ports $(containerPort) \
