@@ -1,5 +1,35 @@
 # LAB04 - Deploy FE/BE su Azure Container Apps con Azure DevOps
 
+
+<details>
+  <summary> <h2>⚠️ Attenzione, modifica build immagini Docker nelle Pipelines</h2></summary>
+  Prima di andare avanti, modifica il comando per la build delle immagini Docker nelle Pipelines con questo:
+  
+  BACKEND
+  ```bash
+   echo "Build backend image: ${BACKEND_IMAGE}"
+   docker buildx build \
+   --platform linux/amd64 \
+   --provenance=false \
+   -t ${BACKEND_IMAGE} \
+   --push \
+   ./backend
+  ```
+
+FRONTEND
+  ```bash
+  echo "Build frontend image: ${FRONTEND_IMAGE}"
+  docker buildx build \
+  --platform linux/amd64 \
+  --provenance=false \
+  -t ${FRONTEND_IMAGE} \
+  --push \
+  ./frontend
+ ```
+  
+  
+</details>
+
 ## Dal monorepo multi-image alla distribuzione reale dei due servizi nel cloud
 
 ---
